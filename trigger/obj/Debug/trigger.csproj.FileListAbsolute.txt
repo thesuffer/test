@@ -1,0 +1,11 @@
+C:\Users\User\source\repos\trigger\trigger\bin\Debug\trigger.exe.config
+C:\Users\User\source\repos\trigger\trigger\bin\Debug\trigger.exe
+C:\Users\User\source\repos\trigger\trigger\bin\Debug\trigger.pdb
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.Form1.resources
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.Properties.Resources.resources
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.csproj.GenerateResource.cache
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.exe
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.pdb
+C:\Users\User\source\repos\trigger\trigger\obj\Debug\trigger.Form2.resources

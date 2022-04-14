@@ -1,0 +1,115 @@
+CREATE DATABASE shop;
+USE shop;
+
+CREATE TABLE orders (
+id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+order_number VARCHAR(5) NOT NULL,
+order_date DATE NOT NULL,
+order_sum INT NOT NULL,
+order_payment INT
+);
+
+CREATE TABLE money_coming (
+id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+coming_number VARCHAR(5) NOT NULL,
+coming_date DATE NOT NULL,
+coming_sum INT,
+balance INT
+);
+
+CREATE TABLE payment (
+id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+order_info INT NOT NULL,
+coming_info INT NOT NULL,
+payment_sum INT NOT NULL,
+);
+
+INSERT INTO orders(order_number, order_date, order_sum, order_payment)
+VALUES ('N2345', '2022-04-01', 70, 0),
+       ('N3344', '2022-04-03', 100, 0),
+       ('N1111', '2022-04-07', 50, 0);
+INSERT INTO money_coming(coming_number, coming_date, coming_sum, balance)
+VALUES ('N001', '2022-04-01',0, 0),
+       ('N002', '2022-04-03', 0, 0),
+       ('N003', '2022-04-07', 0, 0);
+INSERT INTO payment(order_info, coming_info, payment_sum)
+VALUES (1, 1,80),
+       (2, 2,120),
+       (3, 3, 100);
+
+CREATE PROCEDURE upd
+AS
+BEGIN
+UPDATE money_coming
+SET coming_sum = p.payment_sum
+from payment p
+join money_coming c on c.id=p.id;
+UPDATE money_coming
+SET balance = coming_sum;
+END;
+EXEC upd;
+
+use shop
+go
+
+
+CREATE TRIGGER upd_coming
+ON money_coming
+INSTEAD OF UPDATE
+AS
+
+DECLARE @ID1 INT; --/ Приход денег
+SET @ID1 = 2;
+
+DECLARE @ID2 INT; --/ Заказ
+SET @ID2 = 1;
+
+if((SELECT balance FROM money_coming WHERE id = @ID1) >=(SELECT order_sum FROM orders WHERE id=@ID2))
+BEGIN
+IF ((SELECT order_payment FROM orders WHERE id = @ID2) = (SELECT order_sum FROM orders WHERE id = @ID2))
+BEGIN
+PRINT N'Невозможно выполнить действие, заказ уже оплачен.';
+END;
+UPDATE money_coming 
+SET balance = balance - (select o.order_sum
+FROM orders o 
+JOIN money_coming m ON m.id=o.id
+WHERE o.id = @ID2)
+WHERE id = @ID1;
+
+IF ((SELECT coming_sum FROM money_coming WHERE id = @ID1) > (SELECT order_sum FROM orders WHERE id = @ID2))
+BEGIN
+UPDATE orders 
+SET order_payment = order_sum
+WHERE id=@ID2;
+END;
+END;
+
+ELSE 
+BEGIN
+PRINT N'Невозможно выполнить действие, недостаточно средств.';
+END;
+
+CREATE TRIGGER payment_ins
+ON payment
+AFTER INSERT
+AS
+DECLARE @SUM INT;
+SET @SUM = 150;
+DECLARE @NUMBER VARCHAR(4);
+SET @NUMBER = 'N004';
+DECLARE @DATE DATE;
+SET @DATE = '2022-04-11';
+INSERT INTO money_coming(coming_number, coming_date, coming_sum, balance)
+VALUES(@NUMBER, @DATE, @SUM, @SUM);
+
+
+
+	   
+
+
+
+
+
+
+	   
